@@ -3,6 +3,7 @@ using WebApplication1.Models;
 
 namespace WebApplication1.Context
 {
+    //data context luokka
     public class PollContext : DbContext
     {
 
@@ -10,9 +11,8 @@ namespace WebApplication1.Context
 
 
         public DbSet<Poll> Polls { get; set; }
-        public DbSet<VoteOption> Votes { get; set; }
-
-
-
+      
+        //public DbSet<VoteOption> VoteOptions { get; set; }
     }
+
 }

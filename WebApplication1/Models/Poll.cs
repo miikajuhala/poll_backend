@@ -21,7 +21,7 @@ namespace WebApplication1.Models
 
         public string Title { get; set; }
 
-        public virtual ICollection<VoteOption> VoteOptions { get; set; }
+        public ICollection<VoteOption> VoteOptions { get; set; }
 
 
     }
