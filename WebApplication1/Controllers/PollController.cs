@@ -20,45 +20,55 @@ namespace WebApplication1.Controllers
             _pollContext = pollContext;
         }
 
+        //TODO jos kerkee ennen kertausharjotuksia: try catch + messaget
+
 
         // GET all polls including its voteoptions
         [HttpGet]
         public IEnumerable<Poll> Get()
         {
-
             return _pollContext.Polls
-                .Include(
-                poll => poll.VoteOptions)
+                .Include(poll => poll.VoteOptions)
                 .ToList();
         }
+
 
         // GET one poll by its id including its voteoptions
         [HttpGet("{id}")]
         public List<Poll> Get(int id)
         {
+            //get matchin poll by id from db
             Poll poll = _pollContext.Polls.First(s=>s.Id== id);
 
+            //return poll including polls voteoptions by PollId
              return  _pollContext.Polls.Where(s=>s.Id== id).
                 Include(
-                poll => poll.VoteOptions
+                 poll => poll.VoteOptions
                 .Where(VoteOption => VoteOption.PollId == id))
                 .ToList();  
         }
 
-        // POST api/<ValuesController>
+        // POST api/Poll
         //POST object Poll including its VoteOptions as a list and save to database using Entity Framework
         [HttpPost]
         public void Post([FromBody] Poll value)
         {
-
+            //add Poll called value to PollContext 
             _pollContext.Polls.Add(value);
+            //and save to db
             _pollContext.SaveChanges();
         }
 
-        // PUT api/<ValuesController>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        // PUT one vote to voteOption by voteOption id
+        [HttpPut("/putvote/{id}")]
+        public void Put(int id)
         {
+            //Get right voteoption from db
+            VoteOption voteOpt = _pollContext.VoteOptions.First(s => s.Id == id);
+            //increment voteoptions vote counter by one vote
+            voteOpt.VoteAmount++;
+            //save new vote amount to db
+            _pollContext.SaveChanges();
         }
 
         // DELETE api/<ValuesController>/5
