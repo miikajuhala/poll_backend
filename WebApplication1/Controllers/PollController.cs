@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Diagnostics;
 using WebApplication1.Context;
 using WebApplication1.Models;
 
@@ -45,9 +46,11 @@ namespace WebApplication1.Controllers
         }
 
         // POST api/<ValuesController>
+        //POST object Poll including its VoteOptions as a list and save to database using Entity Framework
         [HttpPost]
         public void Post([FromBody] Poll value)
         {
+
             _pollContext.Polls.Add(value);
             _pollContext.SaveChanges();
         }

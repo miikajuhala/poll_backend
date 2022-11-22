@@ -4,6 +4,7 @@ using System.Text.Json.Serialization;
 
 namespace WebApplication1.Models
 {
+    [Table("VoteOption")]
     public class VoteOption
     {
         [Key]
@@ -17,7 +18,7 @@ namespace WebApplication1.Models
 
         public int PollId { get; set; }
         [JsonIgnore]
-        public Poll Poll { get; set; }
+        public Poll? Poll { get; set; }
 
 
     }

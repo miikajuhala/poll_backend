@@ -12,7 +12,7 @@ namespace WebApplication1.Context
 
         public DbSet<Poll> Polls { get; set; }
       
-        //public DbSet<VoteOption> VoteOptions { get; set; }
+        public DbSet<VoteOption> VoteOptions { get; set; }
     }
 
 }
