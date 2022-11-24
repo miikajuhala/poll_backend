@@ -11,6 +11,7 @@ namespace WebApplication1.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
+        [Required]
         public string Title { get; set; }
 
         public int VoteAmount { get; set; }

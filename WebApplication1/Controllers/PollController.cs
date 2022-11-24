@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
+using System.Net;
 using WebApplication1.Context;
 using WebApplication1.Models;
 
@@ -15,60 +16,118 @@ namespace WebApplication1.Controllers
 
         private PollContext _pollContext;
 
-        public PollController (PollContext pollContext)
+        public PollController(PollContext pollContext)
         {
             _pollContext = pollContext;
         }
 
-        //TODO jos kerkee ennen kertausharjotuksia: try catch + messaget
-
+        
 
         // GET all polls including its voteoptions
         [HttpGet]
-        public IEnumerable<Poll> Get()
+        public ActionResult<Poll> Get()
         {
-            return _pollContext.Polls
-                .Include(poll => poll.VoteOptions)
-                .ToList();
+            try
+            {
+                //return all polls including voteoptions
+               var all = _pollContext.Polls
+                    .Include(poll => poll.VoteOptions)
+                    .ToList();
+                if(all.Any())
+                {
+                    return Ok(all);
+                }
+                else
+                {
+                    return BadRequest();
+                }
+            }
+            //catch error and return er message
+            catch (Exception ex) {
+                return BadRequest(ex.Message);
+            }
         }
 
 
         // GET one poll by its id including its voteoptions
         [HttpGet("{id}")]
-        public List<Poll> Get(int id)
+        public ActionResult<Poll> Get(int id)
         {
-            //get matchin poll by id from db
-            Poll poll = _pollContext.Polls.First(s=>s.Id== id);
+            try
+            {
+                //get matchin poll by id from db
+                Poll poll = _pollContext.Polls.FirstOrDefault(s => s.Id == id);
+                //if poll not found, return 404 not found
+                if (poll == null)
+                {
+                    return NotFound("Server: No polls with id: " + id);
+                }
 
-            //return poll including polls voteoptions by PollId
-             return  _pollContext.Polls.Where(s=>s.Id== id).
-                Include(
-                 poll => poll.VoteOptions
-                .Where(VoteOption => VoteOption.PollId == id))
-                .ToList();  
+                //if ok return poll including polls voteoptions by PollId
+                var pollWithOptions =
+                    _pollContext.Polls.Where(s => s.Id == id).
+                        Include(
+                            poll => poll.VoteOptions
+                            .Where(VoteOption => VoteOption.PollId == id))
+                            .ToList();
+
+                return Ok(pollWithOptions);
+            }
+            //catch error and return to client
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.Message);
+                return BadRequest(ex.Message);
+            }
         }
 
         // POST api/Poll
         //POST object Poll including its VoteOptions as a list and save to database using Entity Framework
         [HttpPost]
-        public void Post([FromBody] Poll value)
+        public IActionResult Post([FromBody] Poll value)
         {
-            //add Poll called value to PollContext 
-            _pollContext.Polls.Add(value);
-            //and save to db
-            _pollContext.SaveChanges();
+    
+            //Model exeptions are handled by Entity framework, [Required]
+            try
+            {
+                //add Poll called value to PollContext 
+                _pollContext.Polls.Add(value);
+                //and save to db
+                _pollContext.SaveChanges();
+                //return ok if no errors occurred
+                return Ok(value);
+            }
+            catch
+            {
+                return BadRequest("Internal server error");
+            }
         }
 
         // PUT one vote to voteOption by voteOption id
-        [HttpPut("/putvote/{id}")]
-        public void Put(int id)
+        [HttpPut("putvote/{id}")]
+        public IActionResult Put(int id)
         {
-            //Get right voteoption from db
-            VoteOption voteOpt = _pollContext.VoteOptions.First(s => s.Id == id);
-            //increment voteoptions vote counter by one vote
-            voteOpt.VoteAmount++;
-            //save new vote amount to db
-            _pollContext.SaveChanges();
+            try
+            {
+                //Get right voteoption from db
+                VoteOption voteOpt = _pollContext.VoteOptions.FirstOrDefault(s => s.Id == id);
+                //increment voteoptions vote counter by one vote
+                if (voteOpt == null)
+                {
+                    return NotFound("Server error: voteoption not found");
+                }
+                //add one vote to voteamount
+                voteOpt.VoteAmount++;
+
+                //save new vote amount to db
+                _pollContext.SaveChanges();
+
+                return Ok(voteOpt);
+            }
+            catch 
+            {
+                return BadRequest("Internal server error");
+            }
         }
 
         // DELETE api/<ValuesController>/5
