@@ -9,7 +9,7 @@
 " "ConnectionStrings": {
         "PollConnStr": "Data Source=DESKTOP-VNB4G1U\\MSSQLSERVER01;Initial Catalog=database2;Integrated Security=True;Trust Server Certificate=true"
     }`
-### 5. `run in Package managment console: "add-migration MigrationV2" and "update-database"` 
+### 5. `run in Package managment console: "update-database -migration MigrationV3"` or `run in Package managment console: "add-migration MigrationV4" and then update-database -migration MigrationV4`
 
-### 6. `now empty db is created and backend id ready to use`
+### 6. `now db is created WITH dummy data and backend id ready to use`
 	
