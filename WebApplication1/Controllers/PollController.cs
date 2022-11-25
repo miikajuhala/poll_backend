@@ -125,7 +125,7 @@ namespace WebApplication1.Controllers
                 //save new vote amount to db
                 _pollContext.SaveChanges();
 
-                //return ok if no errors occurred
+                //return ok if no errors 
                 return Ok(voteOpt);
             }
             catch (Exception ex)

@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WebApplication1.Context;
 
@@ -10,9 +11,11 @@ using WebApplication1.Context;
 namespace WebApplication1.Migrations
 {
     [DbContext(typeof(PollContext))]
-    partial class PollContextModelSnapshot : ModelSnapshot
+    [Migration("20221125150034_MigrationV3")]
+    partial class MigrationV3
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
