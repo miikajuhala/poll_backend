@@ -3,8 +3,8 @@
 
 
 ### 1. `Create empty Microsoft SQL database`
-### 2. `Connect to server and created empty database in Visual Code`
-### 3. `Get datagbases connection string from database -> properties -> connection string`
+### 2. `Connect to created empty database in Visual Code`
+### 3. `Get database's connection string from database -> properties -> connection string`
 ### 4. `Add connection string to appsettings.json and remember to add Trust Server Certificate=true to the end.`
 `"ConnectionStrings": {
         "PollConnStr": "Data Source=DESKTOP-VNB4G1U\\MSSQLSERVER01;Initial Catalog=database2;Integrated Security=True;Trust Server Certificate=true"
