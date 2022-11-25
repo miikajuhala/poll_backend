@@ -1,6 +1,6 @@
 
 ### my First .NET C# backend
-# Stack: React, .NET api, Microsoft SQL server
+
 
 ### 1. `Create empty Microsoft SQL database`
 ### 2. `Connect to server and created empty database in Visual Code`
