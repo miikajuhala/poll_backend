@@ -10,5 +10,5 @@
     }`
 ### 5. `run in Package managment console: "update-database -migration MigrationV3"` or `run in Package managment console: "add-migration MigrationV4" and "update-database -migration MigrationV4"`
 
-### 6. `now db is implemented WITH dummy data and backend id ready to use`
+### 6. `now db is implemented WITH dummy data and backend is ready to use`
 	
